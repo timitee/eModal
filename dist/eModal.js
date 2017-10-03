@@ -133,7 +133,45 @@
                 return EMPTY;
             }
 
+            var CLOSE_BUTTON_DEFAULT =   '<a ' +
+                                          'id="close_button" ' +
+                                          'class="btn-modal" ' +
+                                          'data-dismiss="modal" ' +
+                                          'title="Close">' +
+                                          'Close' +
+                                        '</a>';
+
             var messageFotter = $(DIV).addClass('modal-footer').prop('id', FOOTER_ID);
+
+            if (buttons === 'spinner') {
+                var SPINNER = '' +
+                '<form action="/ajax/basket/search/update/" class="form-inline form_spinner" id="id_emodal_form">' +
+                '<div class="form-group">' +
+                  '<label for="id_basket_qty" class="hidden-xs stand-out">Quantity</label> ' +
+                  '<label for="id_basket_qty" class="visible-xs pull-left">Qty</label> ' +
+                  '<input ' +
+                    'type="text" '+
+                    'class="input-md" ' +
+                    'size="6" ' +
+                    'name="basket_qty" ' +
+                    'min="0" ' +
+                    'max="50" ' +
+                    'id="id_basket_qty" ' +
+                    'value="0"/> ' +
+                  '<a ' +
+              			'id="add_quantity" ' +
+              			'class="btn-modal btn-emodal-spinner ajaxcalltype_add_to_basket ajaxcalltype_no_submit_button_main" ' +
+                    'ajax-form-id="id_emodal_form" ' +
+              			'title="Add to Basket"> ' +
+              			'Add to Basket ' +
+              		'</a> ' +
+                  CLOSE_BUTTON_DEFAULT +
+                '</div> ' +
+                '</form>';
+                messageFotter.append(SPINNER);
+                return messageFotter;
+            };
+
             if (buttons) {
                 for (var i = 0, k = buttons.length; i < k; i++) {
                     var btnOp = buttons[i];
@@ -146,7 +184,7 @@
                                     //add close event
                                     if (btnOp[index]) {
                                         btn.attr('data-dismiss', 'modal')
-                                            .addClass('x');
+                                            .addClass('btn-modal');
                                     }
                                     break;
                                 case EVENT_CLICK:
@@ -158,6 +196,7 @@
                                     btn.html(btnOp[index]);
                                     break;
                                 default:
+                                    console.log(index+':'+btnOp[index]);
                                     //all other possible HTML attributes to button element
                                     btn.attr(index, btnOp[index]);
                             }
@@ -167,8 +206,8 @@
                     messageFotter.append(btn);
                 }
             } else {
-                //if no buttons defined by user, add a standard close button.
-                messageFotter.append('<button class="x btn btn-primary" data-dismiss=modal type=button>Close</button>');
+                // If no buttons defined by user, add a standard close button.
+                messageFotter.append(CLOSE_BUTTON_DEFAULT);
             }
             return messageFotter;
         }
